@@ -38,7 +38,9 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>4.4.0.2</version>
+<!--            <version>5.4.0.1</version>-->
+            <version>4.4.0.2</version> <!--THIS OLD VERSION CONSISTS METHOD ApiContext
+                                            .getInstance(DefaultBotOptions.class);-->
         </dependency>
 
     </dependencies>

@@ -2,6 +2,7 @@ package com.maksym.dmyterko.tgbotwizard.models;
 
 /*Class description for the Bean wrapper (BotConfig)*/
 
+import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
@@ -10,22 +11,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
+@Setter
+//Java Abstract class can implement interfaces without even providing the implementation of interface methods.
 public class WizardBot extends TelegramWebhookBot {
     private String webHookPath;
     private String botUserName;
     private String botToken;
 
-    public void setWebHookPath(String webHookPath) {
-        this.webHookPath = webHookPath;
-    }
-
-    public void setBotUserName(String botUserName) {
-        this.botUserName = botUserName;
-    }
-
-    public void setBotToken(String botToken) {
-        this.botToken = botToken;
-    }
 
     public WizardBot(DefaultBotOptions options) {
         super(options);
