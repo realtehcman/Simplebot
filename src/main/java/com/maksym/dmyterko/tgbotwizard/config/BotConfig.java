@@ -6,10 +6,14 @@ import com.maksym.dmyterko.tgbotwizard.models.WizardBot;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 
 @Setter
@@ -33,5 +37,22 @@ public class BotConfig {
         mySuperTelegramBot.setWebHookPath(webHookPath);
 
         return mySuperTelegramBot;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+//ReloadableResourceBundleMessageSource class in such a way that it will search the class-path for
+// properties files on application start-up and dynamically load all of them, thus, I don’t need
+// to restart web app after each alteration
+
+
+        ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource =
+                new ReloadableResourceBundleMessageSource();
+
+        reloadableResourceBundleMessageSource.addBasenames("classpath:questions");
+        reloadableResourceBundleMessageSource.setDefaultEncoding("UTF-8");
+        //looks for the languages at the resource folder
+
+        return reloadableResourceBundleMessageSource;
     }
 }
