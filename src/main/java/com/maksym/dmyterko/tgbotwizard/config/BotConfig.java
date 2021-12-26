@@ -2,6 +2,7 @@ package com.maksym.dmyterko.tgbotwizard.config;
 /*Class that represents the actual bot bean */
 
 import com.maksym.dmyterko.tgbotwizard.TgBotWizardApplication;
+import com.maksym.dmyterko.tgbotwizard.bot_api.Facade;
 import com.maksym.dmyterko.tgbotwizard.models.WizardBot;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,12 +27,13 @@ public class BotConfig {
     private String botToken;
 
 
+
     @Bean
-    public WizardBot TgBotWizardApplication() {
+    public WizardBot TgBotWizardApplication(Facade facade) {
         DefaultBotOptions options = ApiContext
                 .getInstance(DefaultBotOptions.class);
 
-        WizardBot mySuperTelegramBot = new WizardBot(options);
+        WizardBot mySuperTelegramBot = new WizardBot(options, facade);
         mySuperTelegramBot.setBotUserName(botUserName);
         mySuperTelegramBot.setBotToken(botToken);
         mySuperTelegramBot.setWebHookPath(webHookPath);

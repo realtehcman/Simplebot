@@ -17,6 +17,7 @@ public class WebHookController {
         this.telegramBot = telegramBot;
     }
 
+    //    sends the message to a user
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
         return telegramBot.onWebhookUpdateReceived(update);
