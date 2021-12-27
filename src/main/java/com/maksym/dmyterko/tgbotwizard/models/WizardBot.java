@@ -3,7 +3,6 @@ package com.maksym.dmyterko.tgbotwizard.models;
 /*Class description for the Bean wrapper (BotConfig)*/
 
 import com.maksym.dmyterko.tgbotwizard.bot_api.Facade;
-import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
@@ -44,15 +43,27 @@ public class WizardBot extends TelegramWebhookBot {
 
 //    update is the way to get everything from the client (tg id, chat id, message...)
 //transfers the message to the controller
+    /*@Override
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+        SendMessage sendMessage = facade.handleUpdate(update);
+        return sendMessage;
+    }*/
+
+
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        SendMessage sendMessage = facade.handleUpdate(Update);
-        return sendMessage;
+        if (update.getMessage() != null && update.getMessage().hasText()) {
+            long chat_id = update.getMessage().getChatId();
+
+
+            try {
+                execute(new SendMessage(chat_id, "Hi " + update.getMessage().getText()));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
-
-
-
-
-
-
 }
+
