@@ -1,6 +1,6 @@
-package com.maksym.dmyterko.tgbotwizard.controller;
+package com.tehcman.controller;
 
-import com.maksym.dmyterko.tgbotwizard.models.WizardBot;
+import com.tehcman.models.WizardBot;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

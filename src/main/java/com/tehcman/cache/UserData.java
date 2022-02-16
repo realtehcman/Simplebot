@@ -1,8 +1,8 @@
-package com.maksym.dmyterko.tgbotwizard.cache;
+package com.tehcman.cache;
 
 /*It should be used by the FillingProfile class*/
 
-import com.maksym.dmyterko.tgbotwizard.user_data.UserProfile;
+import com.tehcman.user_data.UserProfile;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,8 @@
-package com.maksym.dmyterko.tgbotwizard.services;
+package com.tehcman.services;
 
 /*Class that prepares the ready messages (SendMessage)_
  * */
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 

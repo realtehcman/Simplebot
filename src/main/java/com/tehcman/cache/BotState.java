@@ -1,4 +1,4 @@
-package com.maksym.dmyterko.tgbotwizard.cache;
+package com.tehcman.cache;
 
 public enum BotState {
     ASK_NAME,

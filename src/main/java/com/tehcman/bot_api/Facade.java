@@ -1,7 +1,7 @@
-package com.maksym.dmyterko.tgbotwizard.bot_api;
+package com.tehcman.bot_api;
 
-import com.maksym.dmyterko.tgbotwizard.cache.BotState;
-import com.maksym.dmyterko.tgbotwizard.cache.UserData;
+import com.tehcman.cache.BotState;
+import com.tehcman.cache.UserData;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;

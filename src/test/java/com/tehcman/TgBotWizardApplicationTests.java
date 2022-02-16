@@ -1,4 +1,4 @@
-package com.maksym.dmyterko.tgbotwizard;
+package com.tehcman;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
-package com.maksym.dmyterko.tgbotwizard.bot_api;
+package com.tehcman.bot_api;
 
-import com.maksym.dmyterko.tgbotwizard.cache.BotState;
+import com.tehcman.cache.BotState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 

@@ -1,9 +1,8 @@
-package com.maksym.dmyterko.tgbotwizard.config;
+package com.tehcman.config;
 /*Class that represents the actual bot bean */
 
-import com.maksym.dmyterko.tgbotwizard.TgBotWizardApplication;
-import com.maksym.dmyterko.tgbotwizard.bot_api.Facade;
-import com.maksym.dmyterko.tgbotwizard.models.WizardBot;
+import com.tehcman.bot_api.Facade;
+import com.tehcman.models.WizardBot;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,7 +13,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 
 @Setter

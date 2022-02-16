@@ -1,4 +1,4 @@
-package com.maksym.dmyterko.tgbotwizard;
+package com.tehcman;
 
 /*WORKS! MY CODE*/
 

@@ -1,4 +1,4 @@
-package com.maksym.dmyterko.tgbotwizard.services;
+package com.tehcman.services;
 /*Object holds the locale and user message info
 * */
 import org.springframework.context.MessageSource;

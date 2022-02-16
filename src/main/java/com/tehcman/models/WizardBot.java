@@ -1,8 +1,8 @@
-package com.maksym.dmyterko.tgbotwizard.models;
+package com.tehcman.models;
 
 /*Class description for the Bean wrapper (BotConfig)*/
 
-import com.maksym.dmyterko.tgbotwizard.bot_api.Facade;
+import com.tehcman.bot_api.Facade;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;

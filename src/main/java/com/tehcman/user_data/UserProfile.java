@@ -1,4 +1,4 @@
-package com.maksym.dmyterko.tgbotwizard.user_data;
+package com.tehcman.user_data;
 
 import lombok.AccessLevel;
 import lombok.Data;
