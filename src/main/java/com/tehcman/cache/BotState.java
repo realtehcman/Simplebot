@@ -4,7 +4,7 @@ public enum BotState {
     ASK_NAME,
     ASK_GENDER,
     ASK_AGE,
-    FILLING_PROFILE, //Init state; executes abive commands
+    FILLING_PROFILE, //Init state; executes above commands
     SHOW_HELP_MENU,
     PROFILE_FILLED; //outputs the user data to the user
     }

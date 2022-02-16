@@ -23,7 +23,7 @@ public class Facade {
         String userText = update.getMessage().getText();
 
         if (update.hasMessage() && update.getMessage() != null) {
-            log.info("User chat id {} and their message {}", chatId, userText);
+//            log.info("User chat id {} and their message {}", chatId, userText); temporary
             return handleUserMessage(update.getMessage());
         } else try {
             throw new Exception("Not valid user input");

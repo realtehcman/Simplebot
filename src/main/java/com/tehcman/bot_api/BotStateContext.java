@@ -16,11 +16,13 @@ import java.util.Map;
 public class BotStateContext {
     Map<BotState, InputMessageHandler> messageHandler = new HashMap();
 
-//?
+    //?
+    //magic happens here. somehow this list consists of RIGHT handlers
     public BotStateContext(List<InputMessageHandler> handlers) {
         handlers.forEach(handler -> messageHandler.put(handler.getHandlerName(), handler));
     }
 
+    //    1st editing here
     public SendMessage processMessage(BotState botState, Message message) {
         InputMessageHandler currentMessageHandler = messageHandler.get(botState);
         return currentMessageHandler.handle(message);
