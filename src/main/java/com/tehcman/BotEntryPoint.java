@@ -2,6 +2,7 @@ package com.tehcman;
 
 import com.tehcman.services.BuildMessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -39,16 +40,12 @@ public class BotEntryPoint extends TelegramLongPollingBot {
                 message.getFrom().getUserName(), message.getChatId(), message.getText());
 
         if (message.hasText()){
-            SendMessage sendMessage = SendMessage.builder()
-                    .text("fuk u")
-                    .chatId(message.getChatId().toString())
-                    .parseMode("HTML")
-                    .build();
-            try {
-                execute(sendMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            buildMessageService.buildTGmessage(message);
         }
+    }
+
+    @Autowired //spring will initialize
+    public void setBuildMessageService(BuildMessageService buildMessageService) {
+        this.buildMessageService = buildMessageService;
     }
 }

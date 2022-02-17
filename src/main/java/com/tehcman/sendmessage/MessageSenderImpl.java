@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
+//sends messages to a user
 public class MessageSenderImpl implements MessageSender{
     private BotEntryPoint entryPoint;
 
