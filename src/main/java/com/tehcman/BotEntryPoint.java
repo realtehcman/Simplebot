@@ -1,56 +1,54 @@
 package com.tehcman;
 
 import com.tehcman.services.BuildMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@Slf4j
 @Component
-public class BotEntryPoint extends TelegramWebhookBot {
+public class BotEntryPoint extends TelegramLongPollingBot {
     private BuildMessageService buildMessageService;
 
     @Value("${telegrambot.botToken}")
-    private String botToken;
-
+    private String botToken ;
     @Value("${telegrambot.botName}")
     private String botName;
 
-    @Value("%{telegrambot.webHookPath}")
-    private String webHookPath;
 
     @Override
     public String getBotUsername() {
-        return this.botName;
+        return botName;
     }
 
     @Override
     public String getBotToken() {
-        return this.botToken;
+        return botToken;
     }
 
     @Override
-    public String getBotPath() {
-        return this.webHookPath;
-    }
+    public void onUpdateReceived(Update update) {
+        Message message = update.getMessage();
 
-    @Override
-    public BotApiMethod onWebhookUpdateReceived(Update update) {
-        if(update.hasMessage() && update.getMessage().hasText()){
-//            SendMessage messageForUser = buildMessageService.buildTGmessage(update.getMessage());
-            SendMessage messageForUser = new SendMessage();
-            messageForUser.setChatId(update.getMessage().getChatId().toString());
-            messageForUser.setText("Fuk u");
-            return messageForUser;
+        log.info("New message from User:{}, chatId: {},  with text: {}",
+                message.getFrom().getUserName(), message.getChatId(), message.getText());
+
+        if (message.hasText()){
+            SendMessage sendMessage = SendMessage.builder()
+                    .text("fuk u")
+                    .chatId(message.getChatId().toString())
+                    .parseMode("HTML")
+                    .build();
+            try {
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
-    }
-
-    @Autowired
-    public void setBuildMessageService(BuildMessageService buildMessageService) {
-        this.buildMessageService = buildMessageService;
     }
 }
