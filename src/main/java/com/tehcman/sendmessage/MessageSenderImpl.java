@@ -2,6 +2,7 @@ package com.tehcman.sendmessage;
 
 import com.tehcman.BotEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -12,7 +13,7 @@ public class MessageSenderImpl implements MessageSender{
     private BotEntryPoint entryPoint;
 
     @Autowired
-    public void setEntryPoint(BotEntryPoint entryPoint) {
+    public void setEntryPoint(@Lazy BotEntryPoint entryPoint) {
         this.entryPoint = entryPoint;
     }
 
