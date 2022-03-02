@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class TextHandler implements Handler{
+public class TextHandler implements Handler {
     private final MessageSender messageSender;
     private final BuildMessageService buildMessageService;
 
@@ -21,12 +21,9 @@ public class TextHandler implements Handler{
     }
 
     @Override
-    public void iterateThroughData(Update t) {
+    public void handle(Update t) {
         Message usrMsg = t.getMessage();
-        if (t.getMessage().getText().equals("/start")){
-            buildMessageService.buildButtons(t.getMessage());
-        }
-        else if(usrMsg.getText().equals("give me the text")){
+        if (usrMsg.getText().equals("give me the text")) {
             var sendMessage = SendMessage.builder()
                     .text("" +
                             "Two Russian invaders are out in the woods in Ukraine when one of them collapses.\n" +
@@ -39,6 +36,10 @@ public class TextHandler implements Handler{
                     .chatId(usrMsg.getChatId().toString())
                     .build();
             messageSender.messageSend(sendMessage);
+        }
+        else if (usrMsg.getText().equals("You're dumb 2")){
+            var sendMsg = new SendMessage(usrMsg.getChatId().toString(), "no, you're dumb!");
+            messageSender.messageSend(sendMsg);
         }
     }
 }
