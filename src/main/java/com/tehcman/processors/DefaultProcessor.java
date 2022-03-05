@@ -5,6 +5,7 @@ import com.tehcman.handlers.TextHandler;
 import com.tehcman.handlers.StartHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
@@ -22,19 +23,19 @@ public class DefaultProcessor implements Processor{
 
 
     @Override
-    public void handleCallBackQuery(Update update) {
+    public void handleCallBackQuery(CallbackQuery update) {
         callBackQueryHandler.handle(update);
     }
 
 
     @Override
     public void handleStart(Update update) {
-        startHandler.handle(update);
+        startHandler.handle(update.getMessage());
     }
 
     @Override
-    public void handlePoem(Update update) {
-        textHandler.handle(update);
+    public void handleText(Update update) {
+        textHandler.handle(update.getMessage());
     }
 
 }

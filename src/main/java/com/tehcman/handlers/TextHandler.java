@@ -1,13 +1,13 @@
 package com.tehcman.handlers;
 
 import com.tehcman.sendmessage.MessageSender;
+import com.tehcman.services.BuildInlineButtonsService;
 import com.tehcman.services.BuildMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -15,20 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TextHandler implements Handler {
+public class TextHandler implements Handler<Message> {
     private final MessageSender messageSender;
     private final BuildMessageService buildMessageService;
+    private final BuildInlineButtonsService buildInlineButtonsService; //testing the inline buttons
 
     @Autowired
-    public TextHandler(@Lazy MessageSender messageSender, BuildMessageService buildMessageService) {
+    public TextHandler(@Lazy MessageSender messageSender, BuildMessageService buildMessageService, BuildInlineButtonsService buildInlineButtonsService) {
         this.messageSender = messageSender;
         this.buildMessageService = buildMessageService;
+        this.buildInlineButtonsService = buildInlineButtonsService;
     }
 
+
     @Override
-    public void handle(Update t) {
-        Message usrMsg = t.getMessage();
-        if (usrMsg.getText().equals("give me the text")) {
+    public void handle(Message message) {
+        if (message.getText().equals("give me the text")) {
             var sendMessage = SendMessage.builder()
                     .text("" +
                             "Two Russian invaders are out in the woods in Ukraine when one of them collapses.\n" +
@@ -38,7 +40,7 @@ public class TextHandler implements Handler {
                             "The operator says \"Calm down. I can help. First,\n" +
                             "let's make sure he's dead.\" There is a silence, then a shot is heard.\n" +
                             "Back on the phone, the guy says \"OK, now what?\"\n")
-                    .chatId(usrMsg.getChatId().toString())
+                    .chatId(message.getChatId().toString())
                     .build();
 
             var keyboardMarkup = new InlineKeyboardMarkup();
@@ -50,19 +52,19 @@ public class TextHandler implements Handler {
                     .text("Next joke").callbackData("next_action").build();
 
             List<List<InlineKeyboardButton>> listOfInlineButtons = new ArrayList<>();
-            ArrayList<InlineKeyboardButton> row1 = new ArrayList();
+            ArrayList<InlineKeyboardButton> row1 = new ArrayList<>();
             row1.add(prevAction);
             row1.add(nextAction);
             listOfInlineButtons.add(row1);
 
-            sendMessage.setReplyMarkup(keyboardMarkup);
-
             keyboardMarkup.setKeyboard(listOfInlineButtons);
-            messageSender.messageSend(sendMessage);
 
-        } else if (usrMsg.getText().equals("You're dumb 2")) {
-            var sendMsg = new SendMessage(usrMsg.getChatId().toString(), "no, you're dumb!");
+            sendMessage.setReplyMarkup(keyboardMarkup);
+            messageSender.messageSend(sendMessage);
+        } else if (message.getText().equals("You're dumb 2")) {
+            var sendMsg = new SendMessage(message.getChatId().toString(), "no, you're dumb!");
             messageSender.messageSend(sendMsg);
         }
     }
 }
+

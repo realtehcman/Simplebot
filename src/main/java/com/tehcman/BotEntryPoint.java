@@ -5,6 +5,7 @@ import com.tehcman.services.BuildMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,8 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 @Component
 public class BotEntryPoint extends TelegramLongPollingBot {
-    private BuildMessageService buildMessageService;
-    private Processor processor;
+    private final Processor processor;
 
     @Value("${telegrambot.botToken}")
     private String botToken ;
@@ -21,8 +21,7 @@ public class BotEntryPoint extends TelegramLongPollingBot {
     private String botName;
 
     @Autowired
-    public BotEntryPoint(BuildMessageService buildMessageService, Processor processor) {
-        this.buildMessageService = buildMessageService;
+    public BotEntryPoint(@Lazy Processor processor) {
         this.processor = processor;
     }
 
@@ -39,10 +38,16 @@ public class BotEntryPoint extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.info("New message from User:{}, chatId: {},  with text: {}",
+        if (update == null){
+            try {
+                throw new NullPointerException("CallBack executed? \nnull message");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+/*        log.info("New message from User:{}, chatId: {},  with text: {}",
                 update.getMessage().getFrom().getUserName(),update.getMessage().getChatId(),
-                update.getMessage().getText());
-
+                update.getMessage().getText());*/
         processor.direct(update);
     }
 
