@@ -1,6 +1,5 @@
 package com.tehcman.handlers;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface Handler {
-     void handle(Update t);
+public interface Handler<T> {
+     void handle(T t);
 }

@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class StartHandler implements Handler{
+public class StartHandler implements Handler <Message>{
     private BuildMessageService buildMessageService;
 
     @Autowired
@@ -17,9 +17,9 @@ public class StartHandler implements Handler{
     }
 
     @Override
-    public void handle(Update t) {
-        if (t.getMessage().getText().equals("/start")){
-            buildMessageService.buildButtons(t.getMessage());
+    public void handle(Message message) {
+        if (message.getText().equals("/start")){
+            buildMessageService.buildButtons(message);
         }
     }
 }
