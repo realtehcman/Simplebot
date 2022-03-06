@@ -6,6 +6,7 @@ package com.tehcman.processors;
  * */
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Processor {
@@ -15,14 +16,18 @@ public interface Processor {
 
     void handleCallBackQuery(CallbackQuery update);
 
+    void handleSaveToCache(Message message);
+
 
     default void direct(Update update) {
         if (update.hasMessage() && update.getMessage().getText().equals("/start")) {
             handleStart(update);
-        } else if (update.hasMessage() && !update.getMessage().equals("/start")) {
-            handleText(update);
         } else if (update.hasCallbackQuery()) {
             handleCallBackQuery(update.getCallbackQuery());
+        } else if (update.hasMessage() && update.getMessage().getText().equals("Temporary save my info into the cache")) {
+            handleSaveToCache(update.getMessage());
+        } else {
+            handleText(update);
         }
     }
 

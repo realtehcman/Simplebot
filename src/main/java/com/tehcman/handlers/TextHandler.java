@@ -26,7 +26,7 @@ public class TextHandler implements Handler<Message> {
 
     @Override
     public void handle(Message message) {
-        if (message.getText().equals("give me the text")) {
+        if (message.getText().equals("I want a joke")) {
             var sendMessage = SendMessage.builder()
                     .text("Are you ready for my collection of the most hilarious jokes??\nIf so, press the button below!")
                     .chatId(message.getChatId().toString())
@@ -34,7 +34,7 @@ public class TextHandler implements Handler<Message> {
 
             sendMessage.setReplyMarkup(buildInlineButtonsService.build());
             messageSender.messageSend(sendMessage);
-        } else if (message.getText().equals("You're dumb 2")) {
+        } else if (message.getText().equals("You're dumb")) {
             var sendMsg = new SendMessage(message.getChatId().toString(), "no, you're dumb!");
             messageSender.messageSend(sendMsg);
         }
