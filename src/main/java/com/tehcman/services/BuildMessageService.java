@@ -17,13 +17,24 @@ import java.util.Collections;
 @Service
 public class BuildMessageService {
 
-    @Autowired
-    private MessageSender messageSender;
+    private final ReplyKeyboardMarkup markup;
+    private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
+
+    private final KeyboardRow row1;
+    private final KeyboardRow row2;
+
+
+    private final MessageSender messageSender;
 
     //spring init it with component/bean that implement MessageSender interface
     @Autowired
     public BuildMessageService(@Lazy MessageSender messageSender) {
         this.messageSender = messageSender;
+        this.row1 = new KeyboardRow();
+        this.row2 = new KeyboardRow();
+
+        this.markup = new ReplyKeyboardMarkup();
+        this.arrayOfKeyboardRows = new ArrayList<>();
     }
 
 
@@ -40,23 +51,14 @@ public class BuildMessageService {
     public void buildButtons(Message message) {
         String messageToTheUser = chooseMsgForUser(message);
 
-        var markup = new ReplyKeyboardMarkup();
-        var arrayOfKeyboardRows = new ArrayList<KeyboardRow>();
 
-        var row1 = new KeyboardRow();
         row1.add("I want a joke"); //check for the poem
         row1.add("You're dumb");
 
         var button3 = new KeyboardButton("Temporary save my info into the cache");
 
-        var row2 = new KeyboardRow();
         row2.add(button3);
 
-        //triggers if the user presses the button
-        if (message.getText().equals("Temporary save my info into the cache")) {
-            var button4 = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
-            row2.add(button4);
-        }
 
         Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
@@ -87,6 +89,21 @@ public class BuildMessageService {
                 messageToTheUser = "ok";
         }
         return messageToTheUser;
+    }
+
+    //triggers if we register a new user
+    public void addingPhoneNumberButton(){
+        var button4 = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+        row2.add(button4);
+        Collections.addAll(arrayOfKeyboardRows, row1, row2);
+    }
+
+    public void removingPhoneNumberButton(){
+        row2.remove("Phone number");
+    }
+
+    public void removingNewUserRegistrationButton(){
+        row2.remove("Temporary save my info into the cache");
     }
 
 }

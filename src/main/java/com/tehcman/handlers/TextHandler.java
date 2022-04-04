@@ -39,7 +39,7 @@ public class TextHandler implements Handler<Message> {
             messageSender.messageSend(sendMsg);
         }
         else{
-            System.out.println("I did not understand you. Try to press/text something else");
+            System.out.println("Dummy, I did not understand you. Try to press/text something else");
         }
     }
 }
