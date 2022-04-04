@@ -1,14 +1,25 @@
 package com.tehcman.entities;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-@Component
 public class User {
+    //fill the following fields from the user's message
     private Long id;
     private String tgUsername;
     private String name;
-    private String phoneNumber;
     private Position position;
+
+    private String phoneNumber;
+    private String age;
+
+
+    public User(Long id, String tgUsername, String name, Position position){
+        this.id = id;
+        this.tgUsername = tgUsername;
+        this.name = name;
+        this.position = position;
+    }
 
     public Long getId() {
         return id;
@@ -48,5 +59,13 @@ public class User {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

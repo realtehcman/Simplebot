@@ -1,5 +1,6 @@
 package com.tehcman.entities;
 
 public enum Position {
-    TG_USERNAME, PHUNE_NUMBER, NONE
+    PHONE_NUMBER, AGE, NONE
+    //NONE means user data recording has stopped
 }

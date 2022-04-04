@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class UserCache implements Cache<Object> {
+public class UserCache implements Cache<User> {
     private Map<Long, User> cacheOfAllUsers;
 
     public UserCache() {
@@ -16,7 +16,7 @@ public class UserCache implements Cache<Object> {
 
     @Override
     public void add(User user) {
-        cacheOfAllUsers.put(user.getId(), user);
+        cacheOfAllUsers.putIfAbsent(user.getId(), user);
     }
 
     @Override
@@ -25,12 +25,12 @@ public class UserCache implements Cache<Object> {
     }
 
     @Override
-    public Object findBy(Long id) {
+    public User findBy(Long id) {
         return null;
     }
 
     @Override
-    public List<Object> getAll() {
+    public List<User> getAll() {
         return new ArrayList<>(cacheOfAllUsers.values());
     }
 }

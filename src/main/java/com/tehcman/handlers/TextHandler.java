@@ -38,6 +38,9 @@ public class TextHandler implements Handler<Message> {
             var sendMsg = new SendMessage(message.getChatId().toString(), "no, you're dumb!");
             messageSender.messageSend(sendMsg);
         }
+        else{
+            System.out.println("I did not understand you. Try to press/text something else");
+        }
     }
 }
 
