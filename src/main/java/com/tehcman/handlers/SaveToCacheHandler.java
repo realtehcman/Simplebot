@@ -25,34 +25,42 @@ public class SaveToCacheHandler implements Handler<Message> {
         this.messageSender = messageSender;
     }
 
-    private User generateDefaultUserInformationFromMessage(Message message){
+    private User generateDefaultUserInformationFromMessage(Message message) {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getUserName(), Position.PHONE_NUMBER);
+        buildMessageService.addingPhoneNumberButton(message); //adding phone number button
         return newUser;
     }
 
-    private void registerRestUserData(User user){
-        switch (user.getPosition()){
+    private void registerRestUserData(User user, Message message) {
+        switch (user.getPosition()) {
             case PHONE_NUMBER: //phase 1
+                if (user.getId()!=null) {
+                    //
+                }
+                else{
+                    throw new NullPointerException("User's id (chat id) wasn't found");
+                }
+/*                if (message.getText().equals())
 
+
+            case AGE:
+
+            case NONE:*/
 
         }
     }
 
 
-
-
     @Override
     public void handle(Message message) {
-        //if no user is found in the registry(cache), start the registration
-    if(userCache.findBy(message.getChatId()) == null){
-        registerRestUserData(generateDefaultUserInformationFromMessage(message));
-        buildMessageService.buildButtons(message); //adding phone number button
-    }
-    messageSender.messageSend(new SendMessage(message.getChatId().toString(), "Hey. You are already in the system." +
-            " Instead of duplicating data of yourself, do something useful in your life"));
-
-
+        //if no user is found in the registry(cache), start a new user registration
+        if (userCache.findBy(message.getChatId()) == null) {
+            registerRestUserData(generateDefaultUserInformationFromMessage(message), message);
+        } else {
+            messageSender.messageSend(new SendMessage(message.getChatId().toString(), "Hey. You are already in the system." +
+                    " Instead of duplicating data of yourself, do something useful in your life"));
+        }
 
 
     }

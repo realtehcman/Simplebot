@@ -34,6 +34,7 @@ public class BuildMessageService {
         this.row2 = new KeyboardRow();
 
         this.markup = new ReplyKeyboardMarkup();
+
         this.arrayOfKeyboardRows = new ArrayList<>();
     }
 
@@ -63,9 +64,9 @@ public class BuildMessageService {
         Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
         markup.setKeyboard(arrayOfKeyboardRows);
-        markup.setResizeKeyboard(Boolean.TRUE);
-        markup.getOneTimeKeyboard();
+        markup.setResizeKeyboard(true);
 
+        //without the following lines, buttons won't build
         SendMessage sendThisMessage = new SendMessage();
         sendThisMessage.setChatId(message.getChatId().toString());
         sendThisMessage.setReplyMarkup(markup);
@@ -74,6 +75,44 @@ public class BuildMessageService {
 
         messageSender.messageSend(sendThisMessage);
     }
+
+    //triggers if we register a new user
+
+    public void addingPhoneNumberButton(Message message) {
+        ReplyKeyboardMarkup tempMarkup = markup;
+        tempMarkup.setResizeKeyboard(true);
+        tempMarkup.setOneTimeKeyboard(true);
+
+
+        var button4 = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+
+        var tempArrayOfKeyboardRows = new ArrayList<KeyboardRow>();
+
+        var tempKeyboardRow = new KeyboardRow();
+        tempKeyboardRow.add(button4);
+        tempArrayOfKeyboardRows.add(tempKeyboardRow);
+
+
+        tempMarkup.setKeyboard(tempArrayOfKeyboardRows);
+        tempMarkup.setResizeKeyboard(Boolean.TRUE);
+
+        //without the following lines, buttons won't build
+        SendMessage sendThisMessage = new SendMessage();
+        sendThisMessage.setChatId(message.getChatId().toString());
+        sendThisMessage.setReplyMarkup(tempMarkup);
+        sendThisMessage.setParseMode("HTML");
+        sendThisMessage.setText("Please, press on the \"Phone number\" button");
+
+        messageSender.messageSend(sendThisMessage);
+
+
+    }
+
+    //not developed
+    public void removingNewUserRegistrationButton() {
+        arrayOfKeyboardRows.remove(arrayOfKeyboardRows.size() - 1);
+    }
+
 
     //after pressing a button the user will receive a message
     private String chooseMsgForUser(Message message) {
@@ -90,20 +129,4 @@ public class BuildMessageService {
         }
         return messageToTheUser;
     }
-
-    //triggers if we register a new user
-    public void addingPhoneNumberButton(){
-        var button4 = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
-        row2.add(button4);
-        Collections.addAll(arrayOfKeyboardRows, row1, row2);
-    }
-
-    public void removingPhoneNumberButton(){
-        row2.remove("Phone number");
-    }
-
-    public void removingNewUserRegistrationButton(){
-        row2.remove("Temporary save my info into the cache");
-    }
-
 }
