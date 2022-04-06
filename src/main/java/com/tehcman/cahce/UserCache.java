@@ -7,7 +7,7 @@ import java.util.*;
 
 @Component
 public class UserCache implements Cache<User> {
-    private Map<Long, User> cacheOfAllUsers;
+    private final Map<Long, User> cacheOfAllUsers;
 
     public UserCache() {
         this.cacheOfAllUsers = new HashMap<>();
@@ -26,7 +26,7 @@ public class UserCache implements Cache<User> {
 
     @Override
     public User findBy(Long id) {
-        return null;
+        return cacheOfAllUsers.get(id);
     }
 
     @Override

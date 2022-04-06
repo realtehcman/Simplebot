@@ -18,6 +18,9 @@ import java.util.Collections;
 public class BuildMessageService {
 
     private final ReplyKeyboardMarkup markup;
+    private final ReplyKeyboardMarkup oneTimeMarkup;
+
+
     private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
 
     private final KeyboardRow row1;
@@ -34,6 +37,7 @@ public class BuildMessageService {
         this.row2 = new KeyboardRow();
 
         this.markup = new ReplyKeyboardMarkup();
+        this.oneTimeMarkup = markup;
 
         this.arrayOfKeyboardRows = new ArrayList<>();
     }
@@ -79,41 +83,34 @@ public class BuildMessageService {
     //triggers if we register a new user
 
     public void addingPhoneNumberButton(Message message) {
-        ReplyKeyboardMarkup tempMarkup = markup;
-        tempMarkup.setResizeKeyboard(true);
-        tempMarkup.setOneTimeKeyboard(true);
+        oneTimeMarkup.setResizeKeyboard(true);
+        oneTimeMarkup.setOneTimeKeyboard(true);
 
 
-        var button4 = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+        var tempPhoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
 
         var tempArrayOfKeyboardRows = new ArrayList<KeyboardRow>();
 
         var tempKeyboardRow = new KeyboardRow();
-        tempKeyboardRow.add(button4);
+        tempKeyboardRow.add(tempPhoneNumberButton);
         tempArrayOfKeyboardRows.add(tempKeyboardRow);
 
 
-        tempMarkup.setKeyboard(tempArrayOfKeyboardRows);
-        tempMarkup.setResizeKeyboard(Boolean.TRUE);
+        oneTimeMarkup.setKeyboard(tempArrayOfKeyboardRows);
+        oneTimeMarkup.setResizeKeyboard(Boolean.TRUE);
 
         //without the following lines, buttons won't build
         SendMessage sendThisMessage = new SendMessage();
         sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(tempMarkup);
+        sendThisMessage.setReplyMarkup(oneTimeMarkup);
         sendThisMessage.setParseMode("HTML");
         sendThisMessage.setText("Please, press on the \"Phone number\" button");
 
         messageSender.messageSend(sendThisMessage);
-
-
-    }
-
-    //not developed
-    public void removingNewUserRegistrationButton() {
-        arrayOfKeyboardRows.remove(arrayOfKeyboardRows.size() - 1);
     }
 
 
+    //SHOULD I KEEP THE FOLLOWING CODE?
     //after pressing a button the user will receive a message
     private String chooseMsgForUser(Message message) {
         String messageToTheUser;

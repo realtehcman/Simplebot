@@ -1,9 +1,8 @@
 package com.tehcman.entities;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 public class User {
+    private static boolean isActiveUserRegistration;
+
     //fill the following fields from the user's message
     private Long id;
     private String tgUsername;
@@ -67,5 +66,13 @@ public class User {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public static boolean isActiveUserRegistration() {
+        return isActiveUserRegistration;
+    }
+
+    public static void setActiveUserRegistration(boolean activeUserRegistration) {
+        isActiveUserRegistration = activeUserRegistration;
     }
 }

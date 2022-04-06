@@ -27,26 +27,47 @@ public class SaveToCacheHandler implements Handler<Message> {
 
     private User generateDefaultUserInformationFromMessage(Message message) {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
-                message.getFrom().getUserName(), Position.PHONE_NUMBER);
+                message.getFrom().getFirstName(), Position.PHONE_NUMBER);
+
+        User.setActiveUserRegistration(true);
+
         buildMessageService.addingPhoneNumberButton(message); //adding phone number button
+
         return newUser;
     }
 
     private void registerRestUserData(User user, Message message) {
         switch (user.getPosition()) {
             case PHONE_NUMBER: //phase 1
-                if (user.getId()!=null) {
-                    //
-                }
-                else{
-                    throw new NullPointerException("User's id (chat id) wasn't found");
-                }
-/*                if (message.getText().equals())
+                if (message.hasContact()) {
+                    user.setPhoneNumber(message.getContact().getPhoneNumber());
+                    user.setPosition(Position.AGE);
 
+                    SendMessage newMessage = new SendMessage();
+                    newMessage.setText("Please, type your <i>age</i> at this chat");
+                    newMessage.setParseMode("HTML");
+                    newMessage.setChatId(user.getId().toString());
+                    messageSender.messageSend(newMessage);
 
+                }
+                break;
             case AGE:
+                if (message.getText().matches("\\d{1,2}")) {
+                    user.setAge(message.getText());
+                    user.setPosition(Position.NONE);
+                } else {
+                    SendMessage newMessage = new SendMessage();
+                    newMessage.setText("Please, enter a <u>number</u>");
+                    newMessage.setParseMode("HTML");
+                    newMessage.setChatId(user.getId().toString());
+                }
 
-            case NONE:*/
+                break;
+
+            case NONE:
+                User.setActiveUserRegistration(false);
+                buildMessageService.buildButtons(message);
+                break;
 
         }
     }
@@ -55,13 +76,17 @@ public class SaveToCacheHandler implements Handler<Message> {
     @Override
     public void handle(Message message) {
         //if no user is found in the registry(cache), start a new user registration
-        if (userCache.findBy(message.getChatId()) == null) {
-            registerRestUserData(generateDefaultUserInformationFromMessage(message), message);
-        } else {
+        //LOGICAL ERROR HERE; I ALWAYS OVERWRITE THE EXISTED USER
+        User userFromCache = userCache.findBy(message.getChatId());
+        if (userFromCache == null) {
+            User newUser = generateDefaultUserInformationFromMessage(message);
+            userCache.add(newUser);
+        } else if (userFromCache.getPosition() == Position.NONE) {
             messageSender.messageSend(new SendMessage(message.getChatId().toString(), "Hey. You are already in the system." +
                     " Instead of duplicating data of yourself, do something useful in your life"));
+        } else {
+            registerRestUserData(userFromCache, message);
         }
-
-
     }
+
 }
