@@ -75,4 +75,16 @@ public class User {
     public static void setActiveUserRegistration(boolean activeUserRegistration) {
         isActiveUserRegistration = activeUserRegistration;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", tgUsername='" + tgUsername + '\'' +
+                ", name='" + name + '\'' +
+                ", position=" + position +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
 }

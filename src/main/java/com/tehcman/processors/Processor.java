@@ -22,10 +22,10 @@ public interface Processor {
 
 
     default void direct(Update update) {
-        if (User.isActiveUserRegistration() ||(update.getMessage().getText().equals("Temporary save my info into the cache"))/*(update.getMessage().getText() == null) && (update.getMessage().hasContact())*/) {
+        if (User.isActiveUserRegistration() || (update.getMessage().getText().equals("Temporary save my info into the cache"))/*(update.getMessage().getText() == null) && (update.getMessage().hasContact())*/) {
             handleSaveToCache(update.getMessage());
         } else {
-            if (update.hasMessage() && (update.getMessage().getText().equals("/start") && (!update.getMessage().hasContact()))) {
+            if (update.getMessage().getText().equals("/start")) {
                 handleStart(update);
             } else if (update.hasCallbackQuery()) {
                 handleCallBackQuery(update.getCallbackQuery());

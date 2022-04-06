@@ -16,35 +16,19 @@ import java.util.Collections;
 
 @Service
 public class BuildMessageService {
-
-    private final ReplyKeyboardMarkup markup;
-    private final ReplyKeyboardMarkup oneTimeMarkup;
-
-
-    private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
-
-    private final KeyboardRow row1;
-    private final KeyboardRow row2;
-
-
     private final MessageSender messageSender;
+//    private ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+
 
     //spring init it with component/bean that implement MessageSender interface
     @Autowired
     public BuildMessageService(@Lazy MessageSender messageSender) {
         this.messageSender = messageSender;
-        this.row1 = new KeyboardRow();
-        this.row2 = new KeyboardRow();
-
-        this.markup = new ReplyKeyboardMarkup();
-        this.oneTimeMarkup = markup;
-
-        this.arrayOfKeyboardRows = new ArrayList<>();
     }
 
 
     public void buildTGmessageTest(Message message) {
-        var ms1 = SendMessage.builder() //static method; otherwise i need implement it by myself
+        var ms1 = SendMessage.builder() //static method; otherwise I need implement it by myself
                 .text("<u>Testing this shit</u>")
                 .chatId(message.getChatId().toString())
                 .parseMode("HTML")
@@ -54,26 +38,30 @@ public class BuildMessageService {
     }
 
     public void buildButtons(Message message) {
+        ArrayList<KeyboardRow> arrayOfKeyboardRows = new ArrayList<>();
+        ReplyKeyboardMarkup mainMarkup = new ReplyKeyboardMarkup();
+
+
         String messageToTheUser = chooseMsgForUser(message);
 
-
+        var row1 = new KeyboardRow();
         row1.add("I want a joke"); //check for the poem
         row1.add("You're dumb");
 
+        var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("Temporary save my info into the cache");
-
         row2.add(button3);
 
 
         Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
-        markup.setKeyboard(arrayOfKeyboardRows);
-        markup.setResizeKeyboard(true);
+        mainMarkup.setKeyboard(arrayOfKeyboardRows);
+        mainMarkup.setResizeKeyboard(true);
 
         //without the following lines, buttons won't build
         SendMessage sendThisMessage = new SendMessage();
         sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(markup);
+        sendThisMessage.setReplyMarkup(mainMarkup);
         sendThisMessage.setParseMode("HTML");
         sendThisMessage.setText(messageToTheUser);
 
@@ -83,32 +71,38 @@ public class BuildMessageService {
     //triggers if we register a new user
 
     public void addingPhoneNumberButton(Message message) {
-        oneTimeMarkup.setResizeKeyboard(true);
-        oneTimeMarkup.setOneTimeKeyboard(true);
+        var markup = new ReplyKeyboardMarkup();
+        markup.setResizeKeyboard(true);
+        markup.setOneTimeKeyboard(false);
 
 
-        var tempPhoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+        var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+        var declineSahringPhoneNumber = KeyboardButton.builder().text("I don't want to disclose the phone number").build();
 
-        var tempArrayOfKeyboardRows = new ArrayList<KeyboardRow>();
+        var row1 = new KeyboardRow();
+        Collections.addAll(row1, phoneNumberButton, declineSahringPhoneNumber);
 
-        var tempKeyboardRow = new KeyboardRow();
-        tempKeyboardRow.add(tempPhoneNumberButton);
-        tempArrayOfKeyboardRows.add(tempKeyboardRow);
+        var arrayOfKeyboardRows = new ArrayList<KeyboardRow>();
+        arrayOfKeyboardRows.add(row1);
 
 
-        oneTimeMarkup.setKeyboard(tempArrayOfKeyboardRows);
-        oneTimeMarkup.setResizeKeyboard(Boolean.TRUE);
+        markup.setKeyboard(arrayOfKeyboardRows);
+        markup.setResizeKeyboard(Boolean.TRUE);
 
         //without the following lines, buttons won't build
         SendMessage sendThisMessage = new SendMessage();
         sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(oneTimeMarkup);
+        sendThisMessage.setReplyMarkup(markup);
         sendThisMessage.setParseMode("HTML");
         sendThisMessage.setText("Please, press on the \"Phone number\" button");
 
         messageSender.messageSend(sendThisMessage);
     }
-
+/*
+    public void removingPhoneNumberButton(Message message) {
+        this.markup.
+    }
+*/
 
     //SHOULD I KEEP THE FOLLOWING CODE?
     //after pressing a button the user will receive a message
@@ -126,4 +120,5 @@ public class BuildMessageService {
         }
         return messageToTheUser;
     }
+
 }
