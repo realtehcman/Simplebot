@@ -1,5 +1,7 @@
 package com.tehcman;
 
+//OBSOLETE
+
 /*WORKS! MY CODE*/
 
 import org.springframework.boot.SpringApplication;
