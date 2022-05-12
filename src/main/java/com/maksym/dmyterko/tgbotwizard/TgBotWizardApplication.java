@@ -1,5 +1,7 @@
 package com.maksym.dmyterko.tgbotwizard;
 
+//OBSOLETE
+
 /*WORKS! MY CODE*/
 
 import org.springframework.boot.SpringApplication;
