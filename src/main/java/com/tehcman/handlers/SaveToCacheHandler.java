@@ -32,7 +32,7 @@ public class SaveToCacheHandler implements Handler<Message> {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
 
-        User.setActiveUserRegistration(true);
+//        User.setActiveUserRegistration(true);
 
         buildMessageService.addingPhoneNumberButton(message); //adding phone number button
 
@@ -62,7 +62,7 @@ public class SaveToCacheHandler implements Handler<Message> {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
                     buildMessageService.buildButtons(message);
-                    User.setActiveUserRegistration(false);
+//                    User.setActiveUserRegistration(false);
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");

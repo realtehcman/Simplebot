@@ -12,8 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Processor {
 
-    void handleStart(Update update);
-
     void handleText(Update update);
 
     void handleCallBackQuery(CallbackQuery update);
@@ -22,19 +20,17 @@ public interface Processor {
 
 
     default void direct(Update update) {
-        if (User.isActiveUserRegistration() || (update.getMessage().getText().equals("Temporary save my info into the cache"))/*(update.getMessage().getText() == null) && (update.getMessage().hasContact())*/) {
+        //active registration
+        if (update.getMessage().getText().equals("Temporary save my info into the cache")/*(update.getMessage().getText() == null) && (update.getMessage().hasContact())*/) {
             handleSaveToCache(update.getMessage());
         } else {
-            if (update.getMessage().getText().equals("/start")) {
-                handleStart(update);
+            if (update.getMessage().getText() != null) {
+                handleText(update);
             } else if (update.hasCallbackQuery()) {
                 handleCallBackQuery(update.getCallbackQuery());
             } /*else if ((update.hasMessage() && update.getMessage().getText().equals("Temporary save my info into the cache")) ) {
                 handleSaveToCache(update.getMessage());
             } */
-            else {
-                handleText(update);
-            }
         }
     }
 
