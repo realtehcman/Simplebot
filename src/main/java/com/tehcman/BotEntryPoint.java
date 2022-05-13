@@ -16,6 +16,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class BotEntryPoint extends TelegramLongPollingBot {
     private BuildMessageService buildMessageService;
 
+    @Autowired //spring will initialize
+    public void setBuildMessageService(BuildMessageService buildMessageService) {
+        this.buildMessageService = buildMessageService;
+    }
+
     @Value("${telegrambot.botToken}")
     private String botToken ;
     @Value("${telegrambot.botName}")
@@ -42,10 +47,5 @@ public class BotEntryPoint extends TelegramLongPollingBot {
         if (message.hasText()){
             buildMessageService.buildTGmessage(message);
         }
-    }
-
-    @Autowired //spring will initialize
-    public void setBuildMessageService(BuildMessageService buildMessageService) {
-        this.buildMessageService = buildMessageService;
     }
 }
