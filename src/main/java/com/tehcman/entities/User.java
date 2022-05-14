@@ -1,7 +1,6 @@
 package com.tehcman.entities;
 
 public class User {
-    private static boolean isActiveUserRegistration;
 
     //fill the following fields from the user's message
     private Long id;
@@ -68,13 +67,6 @@ public class User {
         this.age = age;
     }
 
-    public static boolean isActiveUserRegistration() {
-        return isActiveUserRegistration;
-    }
-
-    public static void setActiveUserRegistration(boolean activeUserRegistration) {
-        isActiveUserRegistration = activeUserRegistration;
-    }
 
     @Override
     public String toString() {

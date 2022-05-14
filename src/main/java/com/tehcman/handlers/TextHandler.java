@@ -26,7 +26,9 @@ public class TextHandler implements Handler<Message> {
 
     @Override
     public void handle(Message message) {
-        if (message.getText().equals("I want a joke")) {
+        if (message.getText().equals("/start")) {
+            buildMessageService.buildButtons(message);
+        } else if (message.getText().equals("I want a joke")) {
             var sendMessage = SendMessage.builder()
                     .text("Are you ready for my collection of the most hilarious jokes??\nIf so, press the button below!")
                     .chatId(message.getChatId().toString())
@@ -37,8 +39,7 @@ public class TextHandler implements Handler<Message> {
         } else if (message.getText().equals("You're dumb")) {
             var sendMsg = new SendMessage(message.getChatId().toString(), "no, you're dumb!");
             messageSender.messageSend(sendMsg);
-        }
-        else{
+        } else {
             var sendMsg = new SendMessage(message.getChatId().toString(), "I did not understand you. Try to press/text something else");
             messageSender.messageSend(sendMsg);
         }

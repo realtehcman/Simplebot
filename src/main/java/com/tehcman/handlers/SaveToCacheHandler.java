@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 
 @Component
@@ -32,7 +30,7 @@ public class SaveToCacheHandler implements Handler<Message> {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
 
-        User.setActiveUserRegistration(true);
+//        User.setActiveUserRegistration(true);
 
         buildMessageService.addingPhoneNumberButton(message); //adding phone number button
 
@@ -62,7 +60,7 @@ public class SaveToCacheHandler implements Handler<Message> {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
                     buildMessageService.buildButtons(message);
-                    User.setActiveUserRegistration(false);
+//                    User.setActiveUserRegistration(false);
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");
@@ -77,6 +75,7 @@ public class SaveToCacheHandler implements Handler<Message> {
     }
 
 
+    //entry point
     @Override
     public void handle(Message message) {
         //if no user is found in the registry(cache), start a new user registration
