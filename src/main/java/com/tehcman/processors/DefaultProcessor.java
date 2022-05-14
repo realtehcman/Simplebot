@@ -1,5 +1,7 @@
 package com.tehcman.processors;
 
+import com.tehcman.cahce.Cache;
+import com.tehcman.entities.User;
 import com.tehcman.handlers.CallBackQueryHandler;
 import com.tehcman.handlers.SaveToCacheHandler;
 import com.tehcman.handlers.TextHandler;
@@ -10,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class DefaultProcessor implements Processor{
+public class DefaultProcessor extends Processor{
     private final CallBackQueryHandler callBackQueryHandler;
     private final TextHandler textHandler;
     private final SaveToCacheHandler saveToCacheHandler;
