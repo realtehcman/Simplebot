@@ -55,7 +55,8 @@ public class SaveToCacheHandler implements Handler<Message> {
                 if (message.getText().matches("\\d{1,2}")) {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
-                    buildMessageService.buildButtons(message);
+                    //TODO: implement view and delete data buttons
+                    buildMessageService.afterRegistrationButtons(message);
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");
@@ -65,7 +66,6 @@ public class SaveToCacheHandler implements Handler<Message> {
                     messageSender.messageSend(newMessage);
                 }
                 System.out.println(user);
-
                 break;
         }
     }

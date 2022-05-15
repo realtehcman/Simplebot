@@ -19,7 +19,7 @@ public abstract class Processor {
     private Cache<User> userCache;
 
     @Autowired
-    public void setAge(Cache<User> userCache) {
+    public void setUserCache(Cache<User> userCache) {
         this.userCache = userCache;
     }
 

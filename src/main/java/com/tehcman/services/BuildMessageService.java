@@ -1,5 +1,4 @@
 package com.tehcman.services;
-// TODO: 2/18/2022
 
 import com.tehcman.sendmessage.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +64,40 @@ public class BuildMessageService {
         sendThisMessage.setText(messageToTheUser);
 
         messageSender.messageSend(sendThisMessage);
+    }
+
+    public void afterRegistrationButtons(Message message){
+        ArrayList<KeyboardRow> arrayOfKeyboardRows = new ArrayList<>();
+        ReplyKeyboardMarkup mainMarkup = new ReplyKeyboardMarkup();
+
+
+        String messageToTheUser = chooseMsgForUser(message);
+
+        var row1 = new KeyboardRow();
+        row1.add("I want a joke"); //check for the poem
+        row1.add("You're dumb");
+
+        var row2 = new KeyboardRow();
+        var button3 = new KeyboardButton("View my data");
+        var button4 = new KeyboardButton("Remove my data");
+        row2.add(button3);
+        row2.add(button4);
+
+
+        Collections.addAll(arrayOfKeyboardRows, row1, row2);
+
+        mainMarkup.setKeyboard(arrayOfKeyboardRows);
+        mainMarkup.setResizeKeyboard(true);
+
+        //without the following lines, buttons won't build
+        SendMessage sendThisMessage = new SendMessage();
+        sendThisMessage.setChatId(message.getChatId().toString());
+        sendThisMessage.setReplyMarkup(mainMarkup);
+        sendThisMessage.setParseMode("HTML");
+        sendThisMessage.setText(messageToTheUser);
+
+        messageSender.messageSend(sendThisMessage);
+
     }
 
     //triggers if we register a new user
