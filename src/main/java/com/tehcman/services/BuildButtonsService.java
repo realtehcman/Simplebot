@@ -78,7 +78,7 @@ public class BuildButtonsService {
         row2.add(button4);
 
 
-        Collections.addAll(arrayOfKeyboardRows, row1, row2);
+        Collections.addAll(arrayOfKeyboardRows, row2);
 
         mainMarkup.setKeyboard(arrayOfKeyboardRows);
         mainMarkup.setResizeKeyboard(true);
