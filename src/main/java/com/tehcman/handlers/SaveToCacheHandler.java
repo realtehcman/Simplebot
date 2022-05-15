@@ -29,11 +29,7 @@ public class SaveToCacheHandler implements Handler<Message> {
     private User generateDefaultUserInformationFromMessage(Message message) {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
-
-//        User.setActiveUserRegistration(true);
-
         buildMessageService.addingPhoneNumberButton(message); //adding phone number button
-
         return newUser;
     }
 
@@ -60,7 +56,6 @@ public class SaveToCacheHandler implements Handler<Message> {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
                     buildMessageService.buildButtons(message);
-//                    User.setActiveUserRegistration(false);
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");
@@ -91,7 +86,7 @@ public class SaveToCacheHandler implements Handler<Message> {
         }
     }
 
-    private void sendMsgAskAge(User user){
+    private void sendMsgAskAge(User user) {
         ReplyKeyboardRemove replyKeyboardRemove = new ReplyKeyboardRemove(); //removes the phone number keyboard
         replyKeyboardRemove.setRemoveKeyboard(true);
 

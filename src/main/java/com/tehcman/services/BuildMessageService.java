@@ -17,7 +17,6 @@ import java.util.Collections;
 @Service
 public class BuildMessageService {
     private final MessageSender messageSender;
-//    private ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
 
 
     //spring init it with component/bean that implement MessageSender interface
@@ -98,11 +97,6 @@ public class BuildMessageService {
 
         messageSender.messageSend(sendThisMessage);
     }
-/*
-    public void removingPhoneNumberButton(Message message) {
-        this.markup.
-    }
-*/
 
     //SHOULD I KEEP THE FOLLOWING CODE?
     //after pressing a button the user will receive a message

@@ -1,7 +1,5 @@
 package com.tehcman.processors;
 
-import com.tehcman.cahce.Cache;
-import com.tehcman.entities.User;
 import com.tehcman.handlers.CallBackQueryHandler;
 import com.tehcman.handlers.SaveToCacheHandler;
 import com.tehcman.handlers.TextHandler;
