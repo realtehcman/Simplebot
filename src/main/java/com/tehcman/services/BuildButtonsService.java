@@ -29,7 +29,7 @@ public class BuildButtonsService {
     }
 
     public void buildButtons(Message message) {
-        if (arrayOfKeyboardRows.size()>0){
+        if (arrayOfKeyboardRows.size() > 0) {
             this.arrayOfKeyboardRows = new ArrayList<>();
             this.mainMarkup = new ReplyKeyboardMarkup();
         }
@@ -51,17 +51,11 @@ public class BuildButtonsService {
         mainMarkup.setKeyboard(arrayOfKeyboardRows);
         mainMarkup.setResizeKeyboard(true);
 
-        //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText(messageToTheUser);
+        messageSender.messageSend(newHTMLSendMessage(message.getChatId().toString(), messageToTheUser));
 
-        messageSender.messageSend(sendThisMessage);
     }
 
-    public void afterRegistrationButtons(Message message){
+    public void afterRegistrationButtons(Message message) {
         /*if (arrayOfKeyboardRows.size()>0){
             this.arrayOfKeyboardRows = new ArrayList<>();
             this.mainMarkup = new ReplyKeyboardMarkup();
@@ -80,17 +74,12 @@ public class BuildButtonsService {
 
         Collections.addAll(arrayOfKeyboardRows, row2);
 
-        mainMarkup.setKeyboard(arrayOfKeyboardRows);
-        mainMarkup.setResizeKeyboard(true);
+/*        mainMarkup.setKeyboard(arrayOfKeyboardRows);
+        mainMarkup.setResizeKeyboard(true);*/
 
-        //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText(messageToTheUser);
 
-        messageSender.messageSend(sendThisMessage);
+
+        messageSender.messageSend(newHTMLSendMessage(message.getChatId().toString(), messageToTheUser));
 
     }
 
@@ -116,13 +105,18 @@ public class BuildButtonsService {
         markup.setResizeKeyboard(Boolean.TRUE);
 
         //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(markup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText("Please, press on the \"Phone number\" button");
 
-        messageSender.messageSend(sendThisMessage);
+
+        messageSender.messageSend(newHTMLSendMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button"));
+    }
+
+    public SendMessage newHTMLSendMessage(String chatID, String text) {
+        SendMessage sendThisMessage = new SendMessage();
+        sendThisMessage.setChatId(chatID);
+        sendThisMessage.setReplyMarkup(this.mainMarkup);
+        sendThisMessage.setParseMode("HTML");
+        sendThisMessage.setText(text);
+        return sendThisMessage;
     }
 
 
