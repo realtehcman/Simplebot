@@ -21,11 +21,11 @@ public class BuildButtonsService {
 
 
     @Autowired
-    public BuildButtonsService(MessageSender messageSender, BuildMessageService buildMessageService, ReplyKeyboardMarkup mainMarkup) {
+    public BuildButtonsService(MessageSender messageSender, BuildMessageService buildMessageService) {
         this.messageSender = messageSender;
         this.buildMessageService = buildMessageService;
-        this.mainMarkup = mainMarkup;
         this.arrayOfKeyboardRows = new ArrayList<>();
+        this.mainMarkup = new ReplyKeyboardMarkup();
     }
 
     public void buildButtons(Message message) {
