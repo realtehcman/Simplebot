@@ -34,6 +34,7 @@ public abstract class Processor {
                     case PHONE_NUMBER:
                     case AGE:
                         handleSaveToCache(update.getMessage());
+                        return; //so it won't go to if lines
                 }
             }
         }

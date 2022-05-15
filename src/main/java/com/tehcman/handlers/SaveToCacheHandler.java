@@ -64,7 +64,7 @@ public class SaveToCacheHandler implements Handler<Message> {
 
                     messageSender.messageSend(newMessage);
                 }
-                System.out.println(user);
+                System.out.println(user.toString());
                 break;
         }
     }
