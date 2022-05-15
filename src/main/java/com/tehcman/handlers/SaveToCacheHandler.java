@@ -5,6 +5,7 @@ import com.tehcman.entities.Position;
 import com.tehcman.cahce.Cache;
 import com.tehcman.entities.User;
 import com.tehcman.sendmessage.MessageSender;
+import com.tehcman.services.BuildButtonsService;
 import com.tehcman.services.BuildMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,18 +19,20 @@ public class SaveToCacheHandler implements Handler<Message> {
     private final BuildMessageService buildMessageService;
     private final Cache<User> userCache;
     private final MessageSender messageSender;
+    private final BuildButtonsService buildButtonsService;
 
     @Autowired
-    public SaveToCacheHandler(@Lazy BuildMessageService buildMessageService, Cache<User> userCache, MessageSender messageSender) {
+    public SaveToCacheHandler(@Lazy BuildMessageService buildMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService) {
         this.buildMessageService = buildMessageService;
         this.userCache = userCache;
         this.messageSender = messageSender;
+        this.buildButtonsService = buildButtonsService;
     }
 
     private User generateDefaultUserInformationFromMessage(Message message) {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
-        buildMessageService.addingPhoneNumberButton(message); //adding phone number button
+        buildButtonsService.addingPhoneNumberButton(message); //adding phone number button
         return newUser;
     }
 
@@ -48,7 +51,7 @@ public class SaveToCacheHandler implements Handler<Message> {
                     messageSender.messageSend(newMessage);
 
 
-                    buildMessageService.addingPhoneNumberButton(message);
+                    buildButtonsService.addingPhoneNumberButton(message);
                 }
                 break;
             case AGE:
@@ -56,7 +59,7 @@ public class SaveToCacheHandler implements Handler<Message> {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
                     //TODO: implement view and delete data buttons
-                    buildMessageService.afterRegistrationButtons(message);
+                    buildButtonsService.afterRegistrationButtons(message);
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");
