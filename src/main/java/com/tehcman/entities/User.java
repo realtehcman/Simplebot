@@ -40,7 +40,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name   = name;
     }
 
     public String getPhoneNumber() {
@@ -67,15 +67,14 @@ public class User {
         this.age = age;
     }
 
-
+//TODO: move this method to printer class or message class
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
+        return "Your data:" +
+                "\nid=" + id +
                 ",\n tgUsername='" + tgUsername + '\'' +
                 ",\n name='" + name + '\'' +
                 ",\n phoneNumber='" + phoneNumber + '\'' +
-                ",\n age='" + age + '\'' +
-                '}';
+                ",\n age='" + age + '\'';
     }
 }
