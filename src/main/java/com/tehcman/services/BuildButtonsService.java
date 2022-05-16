@@ -19,7 +19,6 @@ public class BuildButtonsService {
     private ArrayList<KeyboardRow> arrayOfKeyboardRows;
     private ReplyKeyboardMarkup mainMarkup;
 
-
     @Autowired
     public BuildButtonsService(MessageSender messageSender, BuildMessageService buildMessageService) {
         this.messageSender = messageSender;
