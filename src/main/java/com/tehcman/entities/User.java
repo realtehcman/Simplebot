@@ -71,10 +71,10 @@ public class User {
     @Override
     public String toString() {
         return "Your data:" +
-                "\nid=" + id +
-                "\ntgUsername='" + tgUsername + '\'' +
-                "\nname='" + name + '\'' +
-                "\nphoneNumber='" + phoneNumber + '\'' +
-                "\nage='" + age + '\'';
+                "\nid = " + id +
+                "\ntgUsername = '" + tgUsername + '\'' +
+                "\nname = '" + name + '\'' +
+                "\nphoneNumber = '" + phoneNumber + '\'' +
+                "\nage = '" + age + '\'';
     }
 }

@@ -26,6 +26,10 @@ public class BuildButtonsService {
         this.buildMessageService = buildMessageService;
         this.arrayOfKeyboardRows = new ArrayList<>();
         this.mainMarkup = new ReplyKeyboardMarkup();
+
+        //prettifies the buttons
+        this.mainMarkup.setKeyboard(arrayOfKeyboardRows);
+        this.mainMarkup.setResizeKeyboard(true);
     }
 
     public void beforeRegistrationButtons(Message message) {
@@ -44,57 +48,31 @@ public class BuildButtonsService {
 
         Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
-        mainMarkup.setKeyboard(arrayOfKeyboardRows);
-        mainMarkup.setResizeKeyboard(true);
-
-        //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText(messageToTheUser);
-
-        messageSender.messageSend(sendThisMessage);
+        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
     }
 
 
     //triggers if we register a new user
-
     public void addingPhoneNumberButton(Message message) {
         arrayOfKeyboardRows.clear();
 
         var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
-
         var declineSharingPhoneNumber = KeyboardButton.builder().text("I don't want to disclose the phone number").build();
+        var row1 = new KeyboardRow();
+        Collections.addAll(row1, phoneNumberButton, declineSharingPhoneNumber);
 
-        var row2 = new KeyboardRow();
-        Collections.addAll(row2, phoneNumberButton, declineSharingPhoneNumber);
+        arrayOfKeyboardRows.add(row1);
 
-        arrayOfKeyboardRows.add(row2);
-//        mainMarkup.setKeyboard(arrayOfKeyboardRows);
-//        mainMarkup.setResizeKeyboard(true);
-
-
-        //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText("Please, press on the \"Phone number\" button");
-
-        messageSender.messageSend(sendThisMessage);
+        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button"));
     }
 
     public void afterRegistrationButtons(Message message) {
-        /*if (arrayOfKeyboardRows.size()>0){
-            this.arrayOfKeyboardRows = new ArrayList<>();
-            this.mainMarkup = new ReplyKeyboardMarkup();
-        }*/
+
         arrayOfKeyboardRows.clear();
 
 
         var row1 = new KeyboardRow();
-        row1.add("I want a joke"); //check for the poem
+        row1.add("I want a joke");
         row1.add("You're dumb");
 
         //TODO should i keep it
@@ -107,25 +85,14 @@ public class BuildButtonsService {
         row2.add(button3);
         row2.add(button4);
 
-
         Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
-//        mainMarkup.setKeyboard(arrayOfKeyboardRows);
-//        mainMarkup.setResizeKeyboard(true);
 
-        //without the following lines, buttons won't build
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText(messageToTheUser);
-
-        messageSender.messageSend(sendThisMessage);
+        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
 
     }
 
-    //TODO this method may break the program
-    private SendMessage createHTMLMessage(String chatID, String text){
+    private SendMessage createHTMLMessage(String chatID, String text) {
         SendMessage sendThisMessage = new SendMessage();
         sendThisMessage.setChatId(chatID);
         sendThisMessage.setReplyMarkup(this.mainMarkup);
