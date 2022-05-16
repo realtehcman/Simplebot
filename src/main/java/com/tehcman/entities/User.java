@@ -12,7 +12,7 @@ public class User {
     private String age;
 
 
-    public User(Long id, String tgUsername, String name, Position position){
+    public User(Long id, String tgUsername, String name, Position position) {
         this.id = id;
         this.tgUsername = tgUsername;
         this.name = name;
@@ -40,7 +40,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name   = name;
+        this.name = name;
     }
 
     public String getPhoneNumber() {
@@ -67,14 +67,14 @@ public class User {
         this.age = age;
     }
 
-//TODO: move this method to printer class or message class
+
     @Override
     public String toString() {
         return "Your data:" +
                 "\nid=" + id +
-                ",\n tgUsername='" + tgUsername + '\'' +
-                ",\n name='" + name + '\'' +
-                ",\n phoneNumber='" + phoneNumber + '\'' +
-                ",\n age='" + age + '\'';
+                "\ntgUsername='" + tgUsername + '\'' +
+                "\nname='" + name + '\'' +
+                "\nphoneNumber='" + phoneNumber + '\'' +
+                "\nage='" + age + '\'';
     }
 }

@@ -37,7 +37,7 @@ public class TextHandler implements Handler<Message> {
     @Override
     public void handle(Message message) {
         if (message.getText().equals("/start")) {
-            buildButtonsService.buildButtons(message);
+            buildButtonsService.beforeRegistrationButtons(message);
         } else if (message.getText().equals("I want a joke")) {
             var sendMessage = SendMessage.builder()
                     .text("Are you ready for my collection of the most hilarious jokes??\nIf so, press the button below!")
@@ -62,7 +62,7 @@ public class TextHandler implements Handler<Message> {
             userCache.remove(message.getChatId());
             messageSender.messageSend(new SendMessage(message.getChatId().toString(), "All data about you has been removed"));
 
-            buildButtonsService.buildButtons(message);
+            buildButtonsService.beforeRegistrationButtons(message);
 
         } else {
             var sendMsg = new SendMessage(message.getChatId().toString(), "I did not understand you. Try to press/text something else");
