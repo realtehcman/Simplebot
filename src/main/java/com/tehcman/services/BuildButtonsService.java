@@ -16,8 +16,8 @@ import java.util.Collections;
 public class BuildButtonsService {
     private final MessageSender messageSender;
     private final BuildMessageService buildMessageService;
-    private ArrayList<KeyboardRow> arrayOfKeyboardRows;
-    private ReplyKeyboardMarkup mainMarkup;
+    private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
+    private final ReplyKeyboardMarkup mainMarkup;
 
 
     @Autowired
@@ -28,12 +28,8 @@ public class BuildButtonsService {
         this.mainMarkup = new ReplyKeyboardMarkup();
     }
 
-    public void buildButtons(Message message) {
-        if (arrayOfKeyboardRows.size()>0){
-            this.arrayOfKeyboardRows = new ArrayList<>();
-            this.mainMarkup = new ReplyKeyboardMarkup();
-        }
-
+    public void beforeRegistrationButtons(Message message) {
+        arrayOfKeyboardRows.clear();
 
         String messageToTheUser = buildMessageService.chooseMsgForUser(message);
 
@@ -61,16 +57,50 @@ public class BuildButtonsService {
         messageSender.messageSend(sendThisMessage);
     }
 
-    public void afterRegistrationButtons(Message message){
+
+    //triggers if we register a new user
+
+    public void addingPhoneNumberButton(Message message) {
+        arrayOfKeyboardRows.clear();
+
+        var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
+
+        var declineSharingPhoneNumber = KeyboardButton.builder().text("I don't want to disclose the phone number").build();
+
+        var row2 = new KeyboardRow();
+        Collections.addAll(row2, phoneNumberButton, declineSharingPhoneNumber);
+
+        arrayOfKeyboardRows.add(row2);
+//        mainMarkup.setKeyboard(arrayOfKeyboardRows);
+//        mainMarkup.setResizeKeyboard(true);
+
+
+        //without the following lines, buttons won't build
+        SendMessage sendThisMessage = new SendMessage();
+        sendThisMessage.setChatId(message.getChatId().toString());
+        sendThisMessage.setReplyMarkup(mainMarkup);
+        sendThisMessage.setParseMode("HTML");
+        sendThisMessage.setText("Please, press on the \"Phone number\" button");
+
+        messageSender.messageSend(sendThisMessage);
+    }
+
+    public void afterRegistrationButtons(Message message) {
         /*if (arrayOfKeyboardRows.size()>0){
             this.arrayOfKeyboardRows = new ArrayList<>();
             this.mainMarkup = new ReplyKeyboardMarkup();
         }*/
+        arrayOfKeyboardRows.clear();
+
+
+        var row1 = new KeyboardRow();
+        row1.add("I want a joke"); //check for the poem
+        row1.add("You're dumb");
 
         //TODO should i keep it
         String messageToTheUser = buildMessageService.chooseMsgForUser(message);
 
-        arrayOfKeyboardRows.remove(1);
+
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("View my data");
         var button4 = new KeyboardButton("Remove my data");
@@ -78,10 +108,10 @@ public class BuildButtonsService {
         row2.add(button4);
 
 
-        Collections.addAll(arrayOfKeyboardRows, row2);
+        Collections.addAll(arrayOfKeyboardRows, row1, row2);
 
-        mainMarkup.setKeyboard(arrayOfKeyboardRows);
-        mainMarkup.setResizeKeyboard(true);
+//        mainMarkup.setKeyboard(arrayOfKeyboardRows);
+//        mainMarkup.setResizeKeyboard(true);
 
         //without the following lines, buttons won't build
         SendMessage sendThisMessage = new SendMessage();
@@ -94,36 +124,14 @@ public class BuildButtonsService {
 
     }
 
-    //triggers if we register a new user
-
-    public void addingPhoneNumberButton(Message message) {
-        var markup = new ReplyKeyboardMarkup();
-        markup.setResizeKeyboard(true);
-        markup.setOneTimeKeyboard(false);
-
-
-        var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
-        var declineSahringPhoneNumber = KeyboardButton.builder().text("I don't want to disclose the phone number").build();
-
-        var row1 = new KeyboardRow();
-        Collections.addAll(row1, phoneNumberButton, declineSahringPhoneNumber);
-
-        var arrayOfKeyboardRows = new ArrayList<KeyboardRow>();
-        arrayOfKeyboardRows.add(row1);
-
-
-        markup.setKeyboard(arrayOfKeyboardRows);
-        markup.setResizeKeyboard(Boolean.TRUE);
-
-        //without the following lines, buttons won't build
+    //TODO this method may break the program
+    private SendMessage createHTMLMessage(String chatID, String text){
         SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(message.getChatId().toString());
-        sendThisMessage.setReplyMarkup(markup);
+        sendThisMessage.setChatId(chatID);
+        sendThisMessage.setReplyMarkup(this.mainMarkup);
         sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText("Please, press on the \"Phone number\" button");
-
-        messageSender.messageSend(sendThisMessage);
+        sendThisMessage.setText(text);
+        return sendThisMessage;
     }
-
 
 }

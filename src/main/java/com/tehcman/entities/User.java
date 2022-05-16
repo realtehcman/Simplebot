@@ -12,7 +12,7 @@ public class User {
     private String age;
 
 
-    public User(Long id, String tgUsername, String name, Position position){
+    public User(Long id, String tgUsername, String name, Position position) {
         this.id = id;
         this.tgUsername = tgUsername;
         this.name = name;
@@ -70,13 +70,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", tgUsername='" + tgUsername + '\'' +
-                ", name='" + name + '\'' +
-                ", position=" + position +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", age='" + age + '\'' +
-                '}';
+        return "Your data:" +
+                "\nid=" + id +
+                "\ntgUsername='" + tgUsername + '\'' +
+                "\nname='" + name + '\'' +
+                "\nphoneNumber='" + phoneNumber + '\'' +
+                "\nage='" + age + '\'';
     }
 }
