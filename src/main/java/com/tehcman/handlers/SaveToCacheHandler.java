@@ -23,7 +23,7 @@ public class SaveToCacheHandler implements Handler<Message> {
     private final BuildButtonsService buildButtonsService;
 
     @Autowired
-    public SaveToCacheHandler(@Lazy BuildSendMessageService buildSendMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService, IBuildSendMessageService ibuildSendMessageService) {
+    public SaveToCacheHandler(Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService, IBuildSendMessageService ibuildSendMessageService) {
         this.ibuildSendMessageService = ibuildSendMessageService;
         this.userCache = userCache;
         this.messageSender = messageSender;
