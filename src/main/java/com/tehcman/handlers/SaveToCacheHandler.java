@@ -53,7 +53,6 @@ public class SaveToCacheHandler implements Handler<Message> {
                             chatId(message.getChatId().toString()).build();
                     messageSender.messageSend(newMessage);
 
-
                     buildButtonsService.addingPhoneNumberButton(message);
                 }
                 break;
@@ -66,12 +65,7 @@ public class SaveToCacheHandler implements Handler<Message> {
                     messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "ok", buildButtonsService.getMainMarkup()));
 
                 } else {
-                    SendMessage newMessage = new SendMessage();
-                    newMessage.setText("Please, enter a <u>number</u> (0-99)");
-                    newMessage.setParseMode("HTML");
-                    newMessage.setChatId(user.getId().toString());
-
-                    messageSender.messageSend(newMessage);
+                    messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, enter a <u>number</u> (0-99)", buildButtonsService.getMainMarkup()));
                 }
                 System.out.println(user);
                 break;
