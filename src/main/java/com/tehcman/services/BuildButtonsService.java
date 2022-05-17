@@ -1,9 +1,9 @@
 package com.tehcman.services;
 
+import com.tehcman.handlers.TextHandler;
 import com.tehcman.sendmessage.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -15,15 +15,21 @@ import java.util.Collections;
 @Service
 public class BuildButtonsService {
     private final MessageSender messageSender;
-    private final BuildMessageService buildMessageService;
+    private final BuildSendMessageService buildSendMessageService;
     private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
     private final ReplyKeyboardMarkup mainMarkup;
+    private final TextHandler textHandler;
 
+
+    public ReplyKeyboardMarkup getMainMarkup() {
+        return mainMarkup;
+    }
 
     @Autowired
-    public BuildButtonsService(MessageSender messageSender, BuildMessageService buildMessageService) {
+    public BuildButtonsService(MessageSender messageSender, BuildSendMessageService buildSendMessageService, TextHandler textHandler) {
         this.messageSender = messageSender;
-        this.buildMessageService = buildMessageService;
+        this.buildSendMessageService = buildSendMessageService;
+        this.textHandler = textHandler;
         this.arrayOfKeyboardRows = new ArrayList<>();
         this.mainMarkup = new ReplyKeyboardMarkup();
 
@@ -35,15 +41,11 @@ public class BuildButtonsService {
     public void beforeRegistrationButtons(Message message) {
         arrayOfKeyboardRows.clear();
 
-        String messageToTheUser = buildMessageService.chooseMsgForUser(message);
-
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("Temporary save my info into the cache");
         row2.add(button3);
 
         Collections.addAll(arrayOfKeyboardRows, createCommonButtonsRow(), row2);
-
-        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
     }
 
 
@@ -58,15 +60,14 @@ public class BuildButtonsService {
 
         arrayOfKeyboardRows.add(row1);
 
-        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button"));
+        messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button", this.mainMarkup));
     }
 
     public void afterRegistrationButtons(Message message) {
         arrayOfKeyboardRows.clear();
 
         //TODO should i keep it
-        String messageToTheUser = buildMessageService.chooseMsgForUser(message);
-
+        String messageToTheUser = textHandler.chooseMsgForUser(message);
 
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("View my data");
@@ -76,18 +77,9 @@ public class BuildButtonsService {
 
         Collections.addAll(arrayOfKeyboardRows, createCommonButtonsRow(), row2);
 
-
-        messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
+        messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), messageToTheUser, this.mainMarkup));
     }
 
-    private SendMessage createHTMLMessage(String chatID, String text) {
-        SendMessage sendThisMessage = new SendMessage();
-        sendThisMessage.setChatId(chatID);
-        sendThisMessage.setReplyMarkup(this.mainMarkup);
-        sendThisMessage.setParseMode("HTML");
-        sendThisMessage.setText(text);
-        return sendThisMessage;
-    }
 
     //this buttons used for before and after registration
     private KeyboardRow createCommonButtonsRow() {

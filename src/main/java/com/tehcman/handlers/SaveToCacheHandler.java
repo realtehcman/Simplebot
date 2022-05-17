@@ -6,7 +6,7 @@ import com.tehcman.cahce.Cache;
 import com.tehcman.entities.User;
 import com.tehcman.sendmessage.MessageSender;
 import com.tehcman.services.BuildButtonsService;
-import com.tehcman.services.BuildMessageService;
+import com.tehcman.services.BuildSendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,14 +16,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 
 @Component
 public class SaveToCacheHandler implements Handler<Message> {
-    private final BuildMessageService buildMessageService;
+    private final BuildSendMessageService buildSendMessageService;
     private final Cache<User> userCache;
     private final MessageSender messageSender;
     private final BuildButtonsService buildButtonsService;
 
     @Autowired
-    public SaveToCacheHandler(@Lazy BuildMessageService buildMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService) {
-        this.buildMessageService = buildMessageService;
+    public SaveToCacheHandler(@Lazy BuildSendMessageService buildSendMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService) {
+        this.buildSendMessageService = buildSendMessageService;
         this.userCache = userCache;
         this.messageSender = messageSender;
         this.buildButtonsService = buildButtonsService;
