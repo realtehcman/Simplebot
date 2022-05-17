@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -16,7 +17,7 @@ import java.util.Collections;
 public class BuildButtonsService {
     private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
     private final ReplyKeyboardMarkup mainMarkup;
-
+    ReplyKeyboardRemove replyKeyboardRemove ; //removes the phone number keyboard
 
     public ReplyKeyboardMarkup getMainMarkup() {
         return mainMarkup;
@@ -26,6 +27,7 @@ public class BuildButtonsService {
     public BuildButtonsService() {
         this.arrayOfKeyboardRows = new ArrayList<>();
         this.mainMarkup = new ReplyKeyboardMarkup();
+        this.replyKeyboardRemove = new ReplyKeyboardRemove(Boolean.TRUE);
 
         //prettifies the buttons
         this.mainMarkup.setKeyboard(arrayOfKeyboardRows);

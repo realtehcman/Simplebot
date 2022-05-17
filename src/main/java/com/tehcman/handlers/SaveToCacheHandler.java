@@ -44,9 +44,13 @@ public class SaveToCacheHandler implements Handler<Message> {
 
                 if (message.hasContact()) {
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
-                    sendMsgAskAge(user);
+                    messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, type your <i>age</i> at this chat", new ReplyKeyboardRemove(Boolean.TRUE)));
+                    user.setPosition(Position.AGE);
                 } else if (message.getText().equals("I don't want to disclose the phone number")) {
-                    sendMsgAskAge(user);
+                    ReplyKeyboardRemove replyKeyboardRemove = new ReplyKeyboardRemove(); //removes the phone number keyboard
+                    replyKeyboardRemove.setRemoveKeyboard(true);
+                    messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, type your <i>age</i> at this chat", replyKeyboardRemove));
+                    user.setPosition(Position.AGE);
                 } else {
                     var newMessage = SendMessage.builder().
                             text("You haven't shared the phone number!").
@@ -61,7 +65,6 @@ public class SaveToCacheHandler implements Handler<Message> {
                 if (message.getText().matches("\\d{1,2}")) {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
-                    //TODO: implement view and delete data buttons
                     buildButtonsService.afterRegistrationButtons(message);
                     messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "ok", buildButtonsService.getMainMarkup()));
 
@@ -78,7 +81,6 @@ public class SaveToCacheHandler implements Handler<Message> {
         }
     }
 
-
     //entry point
     @Override
     public void handle(Message message) {
@@ -94,18 +96,4 @@ public class SaveToCacheHandler implements Handler<Message> {
             registerRestUserData(userFromCache, message);
         }
     }
-
-    private void sendMsgAskAge(User user) {
-        ReplyKeyboardRemove replyKeyboardRemove = new ReplyKeyboardRemove(); //removes the phone number keyboard
-        replyKeyboardRemove.setRemoveKeyboard(true);
-
-        user.setPosition(Position.AGE);
-        SendMessage newMessage = new SendMessage();
-        newMessage.setText("Please, type your <i>age</i> at this chat");
-        newMessage.setParseMode("HTML");
-        newMessage.setChatId(user.getId().toString());
-        newMessage.setReplyMarkup(replyKeyboardRemove);
-        messageSender.messageSend(newMessage);
-    }
-
 }
