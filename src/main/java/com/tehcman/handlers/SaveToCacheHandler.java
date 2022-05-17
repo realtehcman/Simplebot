@@ -31,7 +31,7 @@ public class SaveToCacheHandler implements Handler<Message> {
     private User generateDefaultUserInformationFromMessage(Message message) {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
-        buildButtonsService.addingPhoneNumberButton(message); //adding phone number button
+        buildButtonsService.addingPhoneNumberButton(); //adding phone number button
         messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button", buildButtonsService.getMainMarkup()));
         return newUser;
     }
@@ -54,15 +54,14 @@ public class SaveToCacheHandler implements Handler<Message> {
                             chatId(message.getChatId().toString()).build();
                     messageSender.messageSend(newMessage);
 
-
-                    buildButtonsService.addingPhoneNumberButton(message);
+                    buildButtonsService.addingPhoneNumberButton();
                 }
                 break;
             case AGE:
                 if (message.getText().matches("\\d{1,2}")) {
                     user.setAge(message.getText());
                     user.setPosition(Position.NONE);
-                    buildButtonsService.afterRegistrationButtons(message);
+                    buildButtonsService.afterRegistrationButtons();
                     messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "ok", buildButtonsService.getMainMarkup()));
 
                 } else {

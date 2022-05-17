@@ -1,10 +1,7 @@
 package com.tehcman.services;
 
-import com.tehcman.handlers.TextHandler;
-import com.tehcman.sendmessage.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -34,7 +31,7 @@ public class BuildButtonsService {
         this.mainMarkup.setResizeKeyboard(true);
     }
 
-    public void beforeRegistrationButtons(Message message) {
+    public void beforeRegistrationButtons() {
         arrayOfKeyboardRows.clear();
 
         var row2 = new KeyboardRow();
@@ -46,7 +43,7 @@ public class BuildButtonsService {
 
 
     //triggers if we register a new user
-    public void addingPhoneNumberButton(Message message) {
+    public void addingPhoneNumberButton() {
         arrayOfKeyboardRows.clear();
 
         var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
@@ -57,7 +54,7 @@ public class BuildButtonsService {
         arrayOfKeyboardRows.add(row1);
     }
 
-    public void afterRegistrationButtons(Message message) {
+    public void afterRegistrationButtons() {
         arrayOfKeyboardRows.clear();
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("View my data");

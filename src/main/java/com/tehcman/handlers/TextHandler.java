@@ -35,7 +35,7 @@ public class TextHandler implements Handler<Message> {
     @Override
     public void handle(Message message) {
         if (message.getText().equals("/start")) {
-            buildButtonsService.beforeRegistrationButtons(message);
+            buildButtonsService.beforeRegistrationButtons();
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Yay! You've just launched this bot!", buildButtonsService.getMainMarkup()));
         } else if (message.getText().equals("I want a joke")) {
             var sendMessage = SendMessage.builder()
@@ -52,7 +52,7 @@ public class TextHandler implements Handler<Message> {
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), userFromCache.toString(), buildButtonsService.getMainMarkup()));
 
         } else if (message.getText().equals("Remove my data")) {
-            buildButtonsService.beforeRegistrationButtons(message);
+            buildButtonsService.beforeRegistrationButtons();
             userCache.remove(message.getChatId());
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "All data about you has been removed", buildButtonsService.getMainMarkup()));
 
