@@ -32,30 +32,10 @@ public class TextHandler implements Handler<Message> {
         this.userCache = userCache;
     }
 
-/*
-    //TODO SHOULD I KEEP THE FOLLOWING CODE?
-    //after pressing a button the user will receive a message
-    public String chooseMsgForUser(Message message) {
-        String messageToTheUser;
-        switch (message.getText()) {
-            case "/start":
-                messageToTheUser = "Yay! You've just launched this bot!";
-                break;
-            case "Temporary save my info into the cache":
-                messageToTheUser = "Press button Phone Number";
-                break;
-            default:
-                messageToTheUser = "ok";
-        }
-        return messageToTheUser;
-    }
-*/
-
-
     @Override
     public void handle(Message message) {
         if (message.getText().equals("/start")) {
-            buildButtonsService.beforeRegistrationButtons(message);
+            buildButtonsService.beforeRegistrationButtons();
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Yay! You've just launched this bot!", buildButtonsService.getMainMarkup()));
         } else if (message.getText().equals("I want a joke")) {
             var sendMessage = SendMessage.builder()
@@ -70,7 +50,7 @@ public class TextHandler implements Handler<Message> {
             User userFromCache = userCache.findBy(message.getChatId());
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), userFromCache.toString(), buildButtonsService.getMainMarkup()));
         } else if (message.getText().equals("Remove my data")) {
-            buildButtonsService.beforeRegistrationButtons(message);
+            buildButtonsService.beforeRegistrationButtons();
             userCache.remove(message.getChatId());
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "All data about you has been removed", buildButtonsService.getMainMarkup()));
         } else {

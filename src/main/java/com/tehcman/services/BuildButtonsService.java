@@ -1,11 +1,9 @@
 package com.tehcman.services;
 
-import com.tehcman.handlers.TextHandler;
-import com.tehcman.sendmessage.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -16,7 +14,7 @@ import java.util.Collections;
 public class BuildButtonsService {
     private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
     private final ReplyKeyboardMarkup mainMarkup;
-
+    ReplyKeyboardRemove replyKeyboardRemove ; //removes the phone number keyboard
 
     public ReplyKeyboardMarkup getMainMarkup() {
         return mainMarkup;
@@ -26,13 +24,14 @@ public class BuildButtonsService {
     public BuildButtonsService() {
         this.arrayOfKeyboardRows = new ArrayList<>();
         this.mainMarkup = new ReplyKeyboardMarkup();
+        this.replyKeyboardRemove = new ReplyKeyboardRemove(Boolean.TRUE);
 
         //prettifies the buttons
         this.mainMarkup.setKeyboard(arrayOfKeyboardRows);
         this.mainMarkup.setResizeKeyboard(true);
     }
 
-    public void beforeRegistrationButtons(Message message) {
+    public void beforeRegistrationButtons() {
         arrayOfKeyboardRows.clear();
 
         var row2 = new KeyboardRow();
@@ -44,7 +43,7 @@ public class BuildButtonsService {
 
 
     //triggers if we register a new user
-    public void addingPhoneNumberButton(Message message) {
+    public void addingPhoneNumberButton() {
         arrayOfKeyboardRows.clear();
 
         var phoneNumberButton = KeyboardButton.builder().text("Phone number").requestContact(Boolean.TRUE).build();
@@ -55,7 +54,7 @@ public class BuildButtonsService {
         arrayOfKeyboardRows.add(row1);
     }
 
-    public void afterRegistrationButtons(Message message) {
+    public void afterRegistrationButtons() {
         arrayOfKeyboardRows.clear();
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("View my data");
