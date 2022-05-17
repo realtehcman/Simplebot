@@ -7,6 +7,7 @@ import com.tehcman.entities.User;
 import com.tehcman.sendmessage.MessageSender;
 import com.tehcman.services.BuildButtonsService;
 import com.tehcman.services.BuildSendMessageService;
+import com.tehcman.services.IBuildSendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 
 @Component
 public class SaveToCacheHandler implements Handler<Message> {
-    private final BuildSendMessageService buildSendMessageService;
+    private final IBuildSendMessageService ibuildSendMessageService;
     private final Cache<User> userCache;
     private final MessageSender messageSender;
     private final BuildButtonsService buildButtonsService;
 
     @Autowired
-    public SaveToCacheHandler(@Lazy BuildSendMessageService buildSendMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService) {
-        this.buildSendMessageService = buildSendMessageService;
+    public SaveToCacheHandler(@Lazy BuildSendMessageService buildSendMessageService, Cache<User> userCache, MessageSender messageSender, BuildButtonsService buildButtonsService, IBuildSendMessageService ibuildSendMessageService) {
+        this.ibuildSendMessageService = ibuildSendMessageService;
         this.userCache = userCache;
         this.messageSender = messageSender;
         this.buildButtonsService = buildButtonsService;
@@ -33,12 +34,14 @@ public class SaveToCacheHandler implements Handler<Message> {
         User newUser = new User(message.getChatId(), message.getFrom().getUserName(),
                 message.getFrom().getFirstName(), Position.PHONE_NUMBER);
         buildButtonsService.addingPhoneNumberButton(message); //adding phone number button
+        messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button", buildButtonsService.getMainMarkup()));
         return newUser;
     }
 
     private void registerRestUserData(User user, Message message) {
         switch (user.getPosition()) {
             case PHONE_NUMBER: //phase 1
+
                 if (message.hasContact()) {
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     sendMsgAskAge(user);
@@ -60,6 +63,8 @@ public class SaveToCacheHandler implements Handler<Message> {
                     user.setPosition(Position.NONE);
                     //TODO: implement view and delete data buttons
                     buildButtonsService.afterRegistrationButtons(message);
+                    messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "ok", buildButtonsService.getMainMarkup()));
+
                 } else {
                     SendMessage newMessage = new SendMessage();
                     newMessage.setText("Please, enter a <u>number</u> (0-99)");

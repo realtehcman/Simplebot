@@ -14,11 +14,8 @@ import java.util.Collections;
 
 @Service
 public class BuildButtonsService {
-    private final MessageSender messageSender;
-    private final BuildSendMessageService buildSendMessageService;
     private final ArrayList<KeyboardRow> arrayOfKeyboardRows;
     private final ReplyKeyboardMarkup mainMarkup;
-    private final TextHandler textHandler;
 
 
     public ReplyKeyboardMarkup getMainMarkup() {
@@ -26,10 +23,7 @@ public class BuildButtonsService {
     }
 
     @Autowired
-    public BuildButtonsService(MessageSender messageSender, BuildSendMessageService buildSendMessageService, TextHandler textHandler) {
-        this.messageSender = messageSender;
-        this.buildSendMessageService = buildSendMessageService;
-        this.textHandler = textHandler;
+    public BuildButtonsService() {
         this.arrayOfKeyboardRows = new ArrayList<>();
         this.mainMarkup = new ReplyKeyboardMarkup();
 
@@ -59,16 +53,10 @@ public class BuildButtonsService {
         Collections.addAll(row1, phoneNumberButton, declineSharingPhoneNumber);
 
         arrayOfKeyboardRows.add(row1);
-
-        messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, press on the \"Phone number\" button", this.mainMarkup));
     }
 
     public void afterRegistrationButtons(Message message) {
         arrayOfKeyboardRows.clear();
-
-        //TODO should i keep it
-        String messageToTheUser = textHandler.chooseMsgForUser(message);
-
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("View my data");
         var button4 = new KeyboardButton("Remove my data");
@@ -76,8 +64,6 @@ public class BuildButtonsService {
         row2.add(button4);
 
         Collections.addAll(arrayOfKeyboardRows, createCommonButtonsRow(), row2);
-
-        messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), messageToTheUser, this.mainMarkup));
     }
 
 
@@ -88,5 +74,4 @@ public class BuildButtonsService {
         row1.add("You're dumb");
         return row1;
     }
-
 }
