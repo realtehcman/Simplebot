@@ -37,16 +37,11 @@ public class BuildButtonsService {
 
         String messageToTheUser = buildMessageService.chooseMsgForUser(message);
 
-        var row1 = new KeyboardRow();
-        row1.add("I want a joke"); //check for the poem
-        row1.add("You're dumb");
-
         var row2 = new KeyboardRow();
         var button3 = new KeyboardButton("Temporary save my info into the cache");
         row2.add(button3);
 
-
-        Collections.addAll(arrayOfKeyboardRows, row1, row2);
+        Collections.addAll(arrayOfKeyboardRows, createCommonButtonsRow(), row2);
 
         messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
     }
@@ -67,13 +62,7 @@ public class BuildButtonsService {
     }
 
     public void afterRegistrationButtons(Message message) {
-
         arrayOfKeyboardRows.clear();
-
-
-        var row1 = new KeyboardRow();
-        row1.add("I want a joke");
-        row1.add("You're dumb");
 
         //TODO should i keep it
         String messageToTheUser = buildMessageService.chooseMsgForUser(message);
@@ -85,11 +74,10 @@ public class BuildButtonsService {
         row2.add(button3);
         row2.add(button4);
 
-        Collections.addAll(arrayOfKeyboardRows, row1, row2);
+        Collections.addAll(arrayOfKeyboardRows, createCommonButtonsRow(), row2);
 
 
         messageSender.messageSend(createHTMLMessage(message.getChatId().toString(), messageToTheUser));
-
     }
 
     private SendMessage createHTMLMessage(String chatID, String text) {
@@ -99,6 +87,14 @@ public class BuildButtonsService {
         sendThisMessage.setParseMode("HTML");
         sendThisMessage.setText(text);
         return sendThisMessage;
+    }
+
+    //this buttons used for before and after registration
+    private KeyboardRow createCommonButtonsRow() {
+        var row1 = new KeyboardRow();
+        row1.add("I want a joke");
+        row1.add("You're dumb");
+        return row1;
     }
 
 }
