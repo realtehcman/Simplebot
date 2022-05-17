@@ -41,7 +41,6 @@ public class SaveToCacheHandler implements Handler<Message> {
     private void registerRestUserData(User user, Message message) {
         switch (user.getPosition()) {
             case PHONE_NUMBER: //phase 1
-
                 if (message.hasContact()) {
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     messageSender.messageSend(ibuildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Please, type your <i>age</i> at this chat", new ReplyKeyboardRemove(Boolean.TRUE)));
