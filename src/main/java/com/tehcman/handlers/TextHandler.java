@@ -7,6 +7,7 @@ import com.tehcman.sendmessage.MessageSender;
 import com.tehcman.services.BuildButtonsService;
 import com.tehcman.services.BuildInlineButtonsService;
 import com.tehcman.services.BuildSendMessageService;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -44,8 +45,9 @@ public class TextHandler implements Handler<Message> {
                     .build();
             sendMessage.setReplyMarkup(buildInlineButtonsService.build());
             messageSender.messageSend(sendMessage);
-        } else if (message.getText().equals("You're dumb")) {
-            messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "no, you're dumb!", buildButtonsService.getMainMarkup()));
+        } else if (message.getText().equals("Hello bot")) {
+            String smile = EmojiParser.parseToUnicode(":smiley:");
+            messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), "Hi, " + message.getChat().getFirstName() + " " + smile, buildButtonsService.getMainMarkup()));
         } else if (message.getText().equals("View my data")) {
             User userFromCache = userCache.findBy(message.getChatId());
             messageSender.messageSend(buildSendMessageService.createHTMLMessage(message.getChatId().toString(), userFromCache.toString(), buildButtonsService.getMainMarkup()));

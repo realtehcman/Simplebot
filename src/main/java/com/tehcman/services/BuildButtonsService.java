@@ -70,7 +70,7 @@ public class BuildButtonsService {
     private KeyboardRow createCommonButtonsRow() {
         var row1 = new KeyboardRow();
         row1.add("I want a joke");
-        row1.add("You're dumb");
+        row1.add("Hello bot");
         return row1;
     }
 }
