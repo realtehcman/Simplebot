@@ -1,0 +1,1 @@
+worker: java -Dserver.port=$server.port $JAVA_OPTS -jar target/*.jar
