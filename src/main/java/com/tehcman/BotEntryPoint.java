@@ -18,9 +18,9 @@ import java.util.Date;
 public class BotEntryPoint extends TelegramLongPollingBot {
     private final Processor processor;
 
-    @Value("${telegrambot.botToken}")
+    @Value("${bot.BOT_TOKEN}")
     private String botToken;
-    @Value("${telegrambot.botName}")
+    @Value("${bot.BOT_USERNAME}")
     private String botName;
 
     @Autowired

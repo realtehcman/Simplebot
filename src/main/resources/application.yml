@@ -1,0 +1,7 @@
+#telegrambot.webHookPath=http://09bc-150-254-104-236.ngrok.io
+
+bot:
+  BOT_TOKEN: 5371959815:AAE8FNDw8i88FOVip575CtNTRwjTvu6GHig
+  BOT_USERNAME: SimpleInteractiveBot
+server:
+  PORT: 5000
